@@ -5,6 +5,7 @@ namespace app\models;
 use app\models\enums\SizeCodeEnum;
 use Yii;
 use yii\base\Model;
+use yii\helpers\FileHelper;
 
 class Generator extends Model
 {
@@ -21,10 +22,15 @@ class Generator extends Model
     public function resizeImage($name, SizeCodeEnum $sizeCode)
     {
         $path = Yii::getAlias('@webroot') . self::PATH_GALLERY . "/$name.jpg";
+        $pathCacheBig = Yii::getAlias('@webroot') . self::PATH_CACHE_BIG;
+        $pathCacheMin = Yii::getAlias('@webroot') . self::PATH_CACHE_MIN;
         if(file_exists($path)) {
             switch ($sizeCode) {
                 case SizeCodeEnum::BIG:
-                    $pathCache = Yii::getAlias('@webroot') . self::PATH_CACHE_BIG . "/$name.jpg";
+                    if(!file_exists($pathCacheBig)) {
+                        FileHelper::createDirectory($pathCacheBig, 0755);
+                    }
+                    $pathCache = $pathCacheBig . "/$name.jpg";
                     if(!file_exists($pathCache)) {
                         if(!$this->resize($path, $pathCache, $sizeCode)) {
                             return '';
@@ -32,7 +38,10 @@ class Generator extends Model
                     }
                     return Yii::getAlias('@web') . self::PATH_CACHE_BIG . "/$name.jpg";
                 case SizeCodeEnum::MIN:
-                    $pathCache = Yii::getAlias('@webroot') . self::PATH_CACHE_MIN . "/$name.jpg";
+                    if(!file_exists($pathCacheMin)) {
+                        FileHelper::createDirectory($pathCacheMin, 0755);
+                    }
+                    $pathCache = $pathCacheMin . "/$name.jpg";
                     if(!file_exists($pathCache)) {
                         if(!$this->resize($path, $pathCache, $sizeCode)) {
                             return '';

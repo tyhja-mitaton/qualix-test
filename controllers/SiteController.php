@@ -6,6 +6,7 @@ use app\models\Generator;
 use app\models\UploadForm;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -71,6 +72,9 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $path = Yii::getAlias('@webroot') . Generator::PATH_GALLERY;
+        if(!file_exists($path)) {
+            FileHelper::createDirectory($path, 0755);
+        }
         $files = scandir($path);
         $uploadForm = new UploadForm();
         if (Yii::$app->request->isPost) {
