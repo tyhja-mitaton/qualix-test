@@ -1,7 +1,7 @@
 ## Команды чтобы развернуть проект
 ```bash
 docker-compose up -d --build
-php yii migrate # в php контейнере
+php yii migrate/up --migrationPath=@vendor/pheme/yii2-settings/migrations # в php контейнере
 ```
 Проект будет доступен по адресу: http://localhost:8000
 
