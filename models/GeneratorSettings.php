@@ -11,6 +11,7 @@ class GeneratorSettings extends Model
     public function rules()
     {
         return [
+            [['max_width', 'max_height', 'min_width', 'min_height'], 'required'],
             [['max_width', 'max_height', 'min_width', 'min_height'], 'integer'],
         ];
     }

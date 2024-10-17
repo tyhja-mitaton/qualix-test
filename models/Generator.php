@@ -33,6 +33,7 @@ class Generator extends Model
                     $pathCache = $pathCacheBig . "/$name.jpg";
                     if(!file_exists($pathCache)) {
                         if(!$this->resize($path, $pathCache, $sizeCode)) {
+                            Yii::$app->session->setFlash('error', 'Image settings are not set');
                             return '';
                         }
                     }
@@ -44,6 +45,7 @@ class Generator extends Model
                     $pathCache = $pathCacheMin . "/$name.jpg";
                     if(!file_exists($pathCache)) {
                         if(!$this->resize($path, $pathCache, $sizeCode)) {
+                            Yii::$app->session->setFlash('error', 'Image settings are not set');
                             return '';
                         }
                     }
@@ -66,6 +68,9 @@ class Generator extends Model
     {
         $image = new \Imagick($path);
         list($newWidth, $newHeight) = [$sizeCode->values()['width'], $sizeCode->values()['height']];
+        if(empty($newWidth) || empty($newHeight)) {
+            return false;
+        }
         $image->thumbnailImage($newWidth, $newHeight, true);
 
         $isSaved =  $image->writeImage($pathCache);

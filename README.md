@@ -10,3 +10,7 @@ php yii migrate/up --migrationPath=@vendor/pheme/yii2-settings/migrations # в p
 2. Загрузить изображения (можно сразу 10)
 
 Если выравнивание плиток галереи не нужно, можно отключить css класс aligned-item
+Настройки кэшируются, если вдруг потребуется сбрость кэш, выполнить команду:
+```bash
+php yii cache/flush-all
+```
